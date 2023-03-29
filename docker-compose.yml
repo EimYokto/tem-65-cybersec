@@ -9,4 +9,20 @@ services:
     ports:
       - 5550:5432
     restart: always
-
+    volumes:
+      - ./postgres_fusionauth/db:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  auth:
+    container_name: ced-auth
+    image: fusionauth/fusionauth-app
+    ports:
+      - 9011:9011
+    restart: always  
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/ced_dev
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: ${DB_PASS}
